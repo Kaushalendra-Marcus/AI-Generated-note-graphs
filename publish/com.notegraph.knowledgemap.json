@@ -1,0 +1,26 @@
+{
+	"manifest_version": 1,
+	"id": "com.notegraph.knowledgemap",
+	"app_min_version": "3.5",
+	"version": "1.0.0",
+	"name": "NoteGraph",
+	"description": "AI-powered knowledge graph for any note. Extracts concepts, relationships and hierarchy using Groq LLM.",
+	"author": "",
+	"homepage_url": "",
+	"repository_url": "",
+	"keywords": [
+		"graph",
+		"knowledge",
+		"ai",
+		"visualization",
+		"concepts"
+	],
+	"categories": [
+		"personal knowledge management"
+	],
+	"screenshots": [],
+	"icons": {},
+	"promo_tile": {},
+	"_publish_hash": "sha256:6cb80453b4bbc2a5ffc59e5ac94b330470b95908582797e5b4e369eee4e7d8e7",
+	"_publish_commit": "main:13c0f44534945a62ce251f97f3696f073dfbd7e9"
+}

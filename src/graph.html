@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--joplin-background-color);
+      color: var(--joplin-color);
+      font-family: var(--joplin-font-family);
+      font-size: var(--joplin-font-size);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #toolbar {
+      padding: 8px 12px;
+      background-color: var(--joplin-background-color2);
+      border-bottom: 1px solid var(--joplin-divider-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    #toolbar input[type="password"],
+    #toolbar input[type="text"] {
+      background-color: var(--joplin-background-color);
+      border: 1px solid var(--joplin-divider-color);
+      color: var(--joplin-color);
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: var(--joplin-font-size);
+    }
+
+    #toolbar input[type="password"] { width: 200px; }
+    #toolbar input[type="text"] { width: 130px; }
+
+    #toolbar input:focus {
+      outline: 1px solid var(--joplin-color-correct);
+      border-color: var(--joplin-color-correct);
+    }
+
+    #toolbar input[type="range"] {
+      width: 80px;
+      cursor: pointer;
+    }
+
+    #toolbar label {
+      font-size: 11px;
+      color: var(--joplin-color-faded);
+    }
+
+    #toolbar button {
+      background-color: var(--joplin-background-color3);
+      border: 1px solid var(--joplin-divider-color);
+      color: var(--joplin-color);
+      padding: 4px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: var(--joplin-font-size);
+    }
+
+    #toolbar button:hover {
+      background-color: var(--joplin-background-color-hover);
+    }
+
+    #toolbar button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    #status {
+      font-size: 11px;
+      color: var(--joplin-color-faded);
+      margin-left: auto;
+    }
+
+    #main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #cy {
+      flex: 1;
+      height: 100%;
+    }
+
+    #sidebar {
+      width: 240px;
+      border-left: 1px solid var(--joplin-divider-color);
+      background-color: var(--joplin-background-color2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: width 0.2s;
+      flex-shrink: 0;
+    }
+
+    #sidebar.hidden {
+      width: 0;
+      border-left: none;
+    }
+
+    #sidebar-header {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--joplin-divider-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    #sidebar-close {
+      background: none;
+      border: none;
+      color: var(--joplin-color-faded);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 4px;
+      line-height: 1;
+    }
+
+    #sidebar-close:hover {
+      color: var(--joplin-color);
+    }
+
+    #sidebar-content {
+      padding: 10px 12px;
+      overflow-y: auto;
+      flex: 1;
+      font-size: 12px;
+    }
+
+    #sidebar-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    #sidebar-meta {
+      color: var(--joplin-color-faded);
+      margin-bottom: 10px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    #sidebar-preview {
+      line-height: 1.6;
+      color: var(--joplin-color);
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 11px;
+    }
+
+    #sidebar-open {
+      margin-top: 12px;
+      width: 100%;
+      padding: 5px 0;
+      background-color: var(--joplin-background-color3);
+      border: 1px solid var(--joplin-divider-color);
+      color: var(--joplin-color);
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #sidebar-open:hover {
+      background-color: var(--joplin-background-color-hover);
+    }
+
+    #legend {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background-color: var(--joplin-background-color2);
+      border: 1px solid var(--joplin-divider-color);
+      border-radius: 3px;
+      padding: 8px 12px;
+      font-size: 11px;
+      color: var(--joplin-color-faded);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    #legend div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    #legend div:last-child { margin-bottom: 0; }
+
+    .leg-solid { width: 24px; height: 2px; background: #4a9eff; }
+    .leg-dotted { width: 24px; height: 0; border-top: 2px dotted #e8a045; }
+    .leg-dashed { width: 24px; height: 0; border-top: 2px dashed #999; }
+  </style>
+</head>
+<body>
+  <div id="toolbar">
+    <input type="password" id="apiKey" placeholder="Gemini API key" />
+    <button id="analyzeBtn">Analyze</button>
+    <button id="resetBtn">Reset view</button>
+    <label for="threshold">Threshold</label>
+    <input type="range" id="threshold" min="0.3" max="0.9" step="0.05" value="0.55" />
+    <label id="thresholdVal">0.55</label>
+    <input type="text" id="search" placeholder="Search notes..." />
+    <span id="status">Select a notebook and click Analyze</span>
+  </div>
+
+  <div id="main">
+    <div id="cy"></div>
+
+    <div id="sidebar" class="hidden">
+      <div id="sidebar-header">
+        <span>Note Preview</span>
+        <button id="sidebar-close">x</button>
+      </div>
+      <div id="sidebar-content">
+        <div id="sidebar-title"></div>
+        <div id="sidebar-meta"></div>
+        <div id="sidebar-preview"></div>
+        <button id="sidebar-open">Open note</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="legend">
+    <div><div class="leg-solid"></div>Explicit link</div>
+    <div><div class="leg-dotted"></div>Shared tag</div>
+    <div><div class="leg-dashed"></div>Semantic</div>
+  </div>
+</body>
+</html>
