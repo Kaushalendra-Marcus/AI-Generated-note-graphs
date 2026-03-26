@@ -131,7 +131,7 @@ joplin.plugins.register({
     // ── panel ─────────────────────────────────────────────────────────────
     const panelId = await joplin.views.panels.create('noteGraphPanel');
     await joplin.views.panels.setHtml(panelId, buildPanelHtml());
-    await joplin.views.panels.addScript(panelId, './webview.js');
+    await joplin.views.panels.addScript(panelId, './graphRenderer.js');
 
     // ── toolbar button ────────────────────────────────────────────────────
     await joplin.commands.register({
@@ -372,7 +372,7 @@ async function sendGraph(
   });
 }
 
-// ── minimal panel HTML shell (real UI is built in webview.js) ────────────────
+// ── minimal panel HTML shell (real UI is built in graphRenderer.js) ────────────────
 function buildPanelHtml(): string {
   return `<!DOCTYPE html>
 <html>
